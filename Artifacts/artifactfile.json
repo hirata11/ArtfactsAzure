@@ -1,16 +1,8 @@
 {
     "$schema": "https://raw.githubusercontent.com/Azure/azure-devtestlab/master/schemas/2016-11-28/dtlArtifacts.json",
     "title": "Azure Pipelines Agent Prosoft",
-    "publisher": "Utkarsh Shigihalli",
-    "description": "Downloads latest Azure Pipelines agent for the account, and installs the specified number instances of the agents inside one Windows VM. Registers the agent with the Azure DevOps account, and adds agents to the specified agent pool. Note - If the specified agent folder already exists it will be overwritten.",
-    "tags": [
-        "Azure DevOps",
-        "Pipelines",
-        "Release",
-        "Build",
-        "CI",
-        "Windows"
-    ],
+    "publisher": "Fernando Hirata",
+    "description": "Download do agent devops e configração ",
     "iconUri": "https://cdn.vsassets.io/content/icons/favicon.ico",
     "targetOsType": "Windows",
     "parameters": {
