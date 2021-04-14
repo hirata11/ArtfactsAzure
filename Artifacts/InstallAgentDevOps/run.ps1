@@ -204,7 +204,7 @@ try {
         # the user or blocking the cmd execution
         Write-Output "Configuring agent '$($Agent)'" 		
         .\config.cmd --unattended --url $serverUrl --auth PAT --token $PersonalAccessToken --pool $PoolName --agent $Agent --runasservice
-        Test-LastExitCode
+        #Test-LastExitCode
 
         Pop-Location
     }
