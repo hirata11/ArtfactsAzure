@@ -26,7 +26,13 @@ Param
     [int] $AgentCount,
 
     [Parameter()]
-    [bool] $Overwrite
+    [bool] $Overwrite,
+    
+    [Parameter()]
+    [string] $LogonAccount,
+
+    [Parameter()]
+    [string] $LogonAccountPass
 )
 
 ###################################################################################################
@@ -88,6 +94,23 @@ function Test-LastExitCode {
     Write-Output "Completed with exit code: $exitCode"
 }
 ###################################################################################################
+
+<#
+$account = "https://tfscloud.prosoft.com.br/tfs/Wolters_Kluwer_Prosoft"
+$PersonalAccessToken = "37yuf37d5kat75uqdl2ty3kppjlnsetawqpaep5jlnboyhuydewa"
+$AgentName = "AgentMan"
+$AgentInstallLocation = "C:\AgentAzureDevOps"
+$AgentNamePrefix = "TST"
+$PoolName = "CompiladorasGap"
+$AgentCount = 1
+$Overwrite = $true
+$PATGITHUB = "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"
+#>
+
+
+
+
+###################################################################################################
 #
 # Main execution block.
 #
@@ -121,7 +144,7 @@ try {
     New-Item -ItemType Directory -Force -Path $agentTempFolderName
     Write-Output "Temporary Agent download folder: $agentTempFolderName" 
 
-    $serverUrl = $Account
+    $serverUrl = "https://tfscloud.prosoft.com.br/tfs/Wolters_Kluwer_Prosoft"             #$Account"
     Write-Output "Server URL: $serverUrl" 
 
     $retryCount = 3
@@ -130,7 +153,7 @@ try {
     do {
         try {
             Write-Output "Fetching download URL for latest Azure DevOps agent..."
-            $vstsAgentUrl = "https://vstsagentpackage.azureedge.net/agent/2.170.1/vsts-agent-win-x64-2.170.1.zip"
+            $vstsAgentUrl = "$serverUrl/_apis/distributedtask/packages/agent/win7-x64?`$top=1&api-version=3.0"
             $basicAuth = (":{0}" -f $PersonalAccessToken)
             $basicAuth = [System.Text.Encoding]::UTF8.GetBytes($basicAuth)
             $basicAuth = [System.Convert]::ToBase64String($basicAuth)
@@ -203,8 +226,8 @@ try {
         # Call the agent with the configure command and all the options (this creates the settings file) without prompting
         # the user or blocking the cmd execution
         Write-Output "Configuring agent '$($Agent)'" 		
-        .\config.cmd --unattended --url $serverUrl --auth PAT --token $PersonalAccessToken --pool $PoolName --agent $Agent --runasservice
-        #Test-LastExitCode
+        .\config.cmd --unattended --url $serverUrl --auth PAT --token $PersonalAccessToken --pool $PoolName --agent $Agent --runAsAutoLogon --windowsLogonAccount $LogonAccount --windowsLogonPassword $LogonAccountPass
+        #        Test-LastExitCode
 
         Pop-Location
     }
